@@ -1,13 +1,11 @@
+import { createDigitValidator } from './createDigitValidator';
+
 export function isValidGuess(guess: string, length: number, base: number): boolean {
   if (guess.length !== length) {
     return false;
   }
 
-  const digits = '0123456789ABCDEF';
-  const allowedDigits = digits.slice(0, base);
-  const validDigits = guess.split('').every((digit) => {
-    return allowedDigits.includes(digit);
-  });
+  const validDigits = guess.split('').every(createDigitValidator(base));
 
   if (validDigits === false) {
     return false;
