@@ -60,6 +60,9 @@ baseSelect.value = '10';
 const newGameButton = document.createElement('button');
 newGameButton.textContent = 'New Game';
 
+const startButton = document.createElement('button');
+startButton.textContent = 'Start Game';
+
 const guessInput = document.createElement('input');
 guessInput.placeholder = 'Enter your guess';
 
@@ -74,6 +77,7 @@ app?.append(
   description,
   lengthSelect,
   baseSelect,
+  startButton,
   newGameButton,
   guessInput,
   checkButton,
@@ -85,15 +89,28 @@ let secret = '';
 let isGameOver = false;
 let currentLength = 4;
 let currentBase = 10;
-newGameButton.addEventListener('click', () => {
+startButton.addEventListener('click', () => {
   guessInput.value = '';
   message.textContent = '';
   history.textContent = '';
   currentLength = Number(lengthSelect.value);
   currentBase = Number(baseSelect.value);
   secret = generateSecret(currentLength, currentBase);
+  lengthSelect.disabled = true;
+  baseSelect.disabled = true;
+  startButton.disabled = true;
   isGameOver = false;
   console.log(secret);
+});
+
+newGameButton.addEventListener('click', () => {
+  lengthSelect.disabled = false;
+  baseSelect.disabled = false;
+  secret = '';
+  guessInput.value = '';
+  message.textContent = '';
+  history.textContent = '';
+  startButton.disabled = false;
 });
 
 guessInput.addEventListener('input', () => {
