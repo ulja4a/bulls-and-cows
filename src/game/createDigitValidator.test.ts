@@ -31,4 +31,10 @@ describe('createDigitValidator', () => {
     expect(isHexDigit('F')).toBe(true);
     expect(isHexDigit('G')).toBe(false);
   });
+
+  it('accepts lowercase hexadecimal digits', () => {
+    const isHexDigit = createDigitValidator(16);
+
+    expect(isHexDigit('a')).toBe(true);
+  });
 });
