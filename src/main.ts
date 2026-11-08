@@ -24,14 +24,16 @@ const checkButton = document.createElement('button');
 checkButton.textContent = 'Check Guess';
 
 const message = document.createElement('p');
+const history = document.createElement('div');
 
-app?.append(title, description, newGameButton, guessInput, checkButton, message);
+app?.append(title, description, newGameButton, guessInput, checkButton, message, history);
 
 let secret = '';
 let isGameOver = false;
 newGameButton.addEventListener('click', () => {
   guessInput.value = '';
   message.textContent = '';
+  history.textContent = '';
   secret = generateSecret(4, 10);
   isGameOver = false;
   console.log(secret);
@@ -59,6 +61,9 @@ checkButton.addEventListener('click', () => {
     message.textContent = 'Invalid guess!';
   } else {
     const result = evaluateGuess(secret, guess);
+    const historyItem = document.createElement('p');
+    historyItem.textContent = `Guess: ${guess}, Bulls: ${result.bulls}, Cows: ${result.cows}`;
+    history.appendChild(historyItem);
 
     if (result.bulls === 4) {
       message.textContent = 'You win!';
