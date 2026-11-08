@@ -37,4 +37,10 @@ describe('isValidGuess', () => {
 
     expect(result).toBe(false);
   });
+
+  it('rejects duplicate hexadecimal digits with different cases', () => {
+    const result = isValidGuess('aA12', 4, 16);
+
+    expect(result).toBe(false);
+  });
 });
