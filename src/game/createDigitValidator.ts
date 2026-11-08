@@ -3,6 +3,6 @@ export function createDigitValidator(base: number) {
   const allowedDigits = digits.slice(0, base);
 
   return (digit: string): boolean => {
-    return allowedDigits.includes(digit);
+    return allowedDigits.includes(digit.toUpperCase());
   };
 }
