@@ -1,6 +1,6 @@
 export function evaluateGuess(secret: string, guess: string) {
-  const secretDigits = secret.split('');
-  const guessDigits = guess.split('');
+  const secretDigits = secret.toUpperCase().split('');
+  const guessDigits = guess.toUpperCase().split('');
   const bulls = secretDigits.filter((digit, index) => {
     return digit === guessDigits[index];
   }).length;
