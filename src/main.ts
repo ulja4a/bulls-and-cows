@@ -26,6 +26,37 @@ for (let length = 2; length <= 6; length += 1) {
 }
 lengthSelect.value = '4';
 
+const baseSelect = document.createElement('select');
+const binaryOption = document.createElement('option');
+binaryOption.value = '2';
+binaryOption.textContent = 'bin';
+
+const octalOption = document.createElement('option');
+octalOption.value = '8';
+octalOption.textContent = 'oct';
+
+const decimalOption = document.createElement('option');
+decimalOption.value = '10';
+decimalOption.textContent = 'dec';
+
+const hexOption = document.createElement('option');
+hexOption.value = '16';
+hexOption.textContent = 'hex';
+
+baseSelect.addEventListener('change', () => {
+  const selectedBase = Number(baseSelect.value);
+
+  Array.from(lengthSelect.options).forEach((option) => {
+    option.disabled = Number(option.value) > selectedBase;
+  });
+  if (Number(lengthSelect.value) > selectedBase) {
+    lengthSelect.value = '2';
+  }
+});
+
+baseSelect.append(binaryOption, octalOption, decimalOption, hexOption);
+baseSelect.value = '10';
+
 const newGameButton = document.createElement('button');
 newGameButton.textContent = 'New Game';
 
@@ -42,6 +73,7 @@ app?.append(
   title,
   description,
   lengthSelect,
+  baseSelect,
   newGameButton,
   guessInput,
   checkButton,
@@ -52,12 +84,14 @@ app?.append(
 let secret = '';
 let isGameOver = false;
 let currentLength = 4;
+let currentBase = 10;
 newGameButton.addEventListener('click', () => {
   guessInput.value = '';
   message.textContent = '';
   history.textContent = '';
   currentLength = Number(lengthSelect.value);
-  secret = generateSecret(currentLength, 10);
+  currentBase = Number(baseSelect.value);
+  secret = generateSecret(currentLength, currentBase);
   isGameOver = false;
   console.log(secret);
 });
@@ -78,7 +112,7 @@ checkButton.addEventListener('click', () => {
   }
 
   const guess = guessInput.value;
-  const isValid = isValidGuess(guess, currentLength, 10);
+  const isValid = isValidGuess(guess, currentLength, currentBase);
 
   if (isValid === false) {
     message.textContent = 'Invalid guess!';
