@@ -14,6 +14,18 @@ title.textContent = gameName;
 const description = document.createElement('p');
 description.textContent = 'Guess the secret number!';
 
+const lengthSelect = document.createElement('select');
+
+for (let length = 2; length <= 6; length += 1) {
+  const lengthOption = document.createElement('option');
+
+  lengthOption.value = String(length);
+  lengthOption.textContent = String(length);
+
+  lengthSelect.appendChild(lengthOption);
+}
+lengthSelect.value = '4';
+
 const newGameButton = document.createElement('button');
 newGameButton.textContent = 'New Game';
 
@@ -26,15 +38,26 @@ checkButton.textContent = 'Check Guess';
 const message = document.createElement('p');
 const history = document.createElement('div');
 
-app?.append(title, description, newGameButton, guessInput, checkButton, message, history);
+app?.append(
+  title,
+  description,
+  lengthSelect,
+  newGameButton,
+  guessInput,
+  checkButton,
+  message,
+  history,
+);
 
 let secret = '';
 let isGameOver = false;
+let currentLength = 4;
 newGameButton.addEventListener('click', () => {
   guessInput.value = '';
   message.textContent = '';
   history.textContent = '';
-  secret = generateSecret(4, 10);
+  currentLength = Number(lengthSelect.value);
+  secret = generateSecret(currentLength, 10);
   isGameOver = false;
   console.log(secret);
 });
@@ -55,7 +78,7 @@ checkButton.addEventListener('click', () => {
   }
 
   const guess = guessInput.value;
-  const isValid = isValidGuess(guess, 4, 10);
+  const isValid = isValidGuess(guess, currentLength, 10);
 
   if (isValid === false) {
     message.textContent = 'Invalid guess!';
@@ -65,7 +88,7 @@ checkButton.addEventListener('click', () => {
     historyItem.textContent = `Guess: ${guess}, Bulls: ${result.bulls}, Cows: ${result.cows}`;
     history.appendChild(historyItem);
 
-    if (result.bulls === 4) {
+    if (result.bulls === currentLength) {
       message.textContent = 'You win!';
       isGameOver = true;
     } else {
