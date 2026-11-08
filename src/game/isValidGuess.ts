@@ -11,7 +11,7 @@ export function isValidGuess(guess: string, length: number, base: number): boole
     return false;
   }
 
-  const guessDigits = guess.split('');
+  const guessDigits = guess.toUpperCase().split('');
   const uniqueDigits = new Set(guessDigits);
   if (uniqueDigits.size !== guessDigits.length) {
     return false;
