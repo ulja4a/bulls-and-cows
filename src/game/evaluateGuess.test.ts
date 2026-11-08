@@ -37,4 +37,10 @@ describe('evaluateGuess', () => {
 
     expect(result).toEqual({ bulls: 0, cows: 2 });
   });
+
+  it('treats lowercase and uppercase hexadecimal digits as equal', () => {
+    const result = evaluateGuess('A123', 'a123');
+
+    expect(result).toEqual({ bulls: 4, cows: 0 });
+  });
 });
