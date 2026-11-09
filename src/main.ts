@@ -90,10 +90,12 @@ let secret = '';
 let isGameOver = false;
 let currentLength = 4;
 let currentBase = 10;
+const guesses = new Set<string>();
 startButton.addEventListener('click', () => {
   guessInput.value = '';
   message.textContent = '';
   history.textContent = '';
+  guesses.clear();
   currentLength = Number(lengthSelect.value);
   currentBase = Number(baseSelect.value);
   secret = generateSecret(currentLength, currentBase);
@@ -135,11 +137,16 @@ checkButton.addEventListener('click', () => {
   }
 
   const guess = guessInput.value;
+  if (guesses.has(guess)) {
+    message.textContent = 'You already tried this guess!';
+    return;
+  }
   const isValid = isValidGuess(guess, currentLength, currentBase);
 
   if (isValid === false) {
     message.textContent = 'Invalid guess!';
   } else {
+    guesses.add(guess);
     const result = evaluateGuess(secret, guess);
     const historyItem = document.createElement('p');
     historyItem.textContent = `Guess: ${guess}, Bulls: ${result.bulls}, Cows: ${result.cows}`;
