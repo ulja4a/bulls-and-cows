@@ -97,6 +97,7 @@ let isGameOver = false;
 let currentLength = 4;
 let currentBase = 10;
 const guesses = new Set<string>();
+let attemptHistory: { guess: string; bulls: number; cows: number }[] = [];
 let attempts = 0;
 let seconds = 0;
 let timerId: number | null = null;
@@ -105,6 +106,7 @@ startButton.addEventListener('click', () => {
   message.textContent = '';
   history.textContent = '';
   guesses.clear();
+  attemptHistory = [];
   attempts = 0;
   attemptsDisplay.textContent = `Attempts: ${attempts}`;
   seconds = 0;
@@ -134,6 +136,7 @@ newGameButton.addEventListener('click', () => {
   message.textContent = '';
   history.textContent = '';
   guesses.clear();
+  attemptHistory = [];
   attempts = 0;
   attemptsDisplay.textContent = 'Attempts: 0';
   seconds = 0;
@@ -176,9 +179,21 @@ checkButton.addEventListener('click', () => {
     attempts += 1;
     attemptsDisplay.textContent = `Attempts: ${attempts}`;
     const result = evaluateGuess(secret, guess);
-    const historyItem = document.createElement('p');
-    historyItem.textContent = `Guess: ${guess}, Bulls: ${result.bulls}, Cows: ${result.cows}`;
-    history.appendChild(historyItem);
+    attemptHistory = [
+      ...attemptHistory,
+      {
+        guess,
+        bulls: result.bulls,
+        cows: result.cows,
+      },
+    ];
+    history.textContent = '';
+
+    attemptHistory.forEach((attempt) => {
+      const historyItem = document.createElement('p');
+      historyItem.textContent = `Guess: ${attempt.guess}, Bulls: ${attempt.bulls}, Cows: ${attempt.cows}`;
+      history.appendChild(historyItem);
+    });
 
     if (result.bulls === currentLength) {
       message.textContent = 'You win!';
