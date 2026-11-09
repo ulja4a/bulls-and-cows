@@ -1,6 +1,7 @@
 import { generateSecret } from './game/generateSecret';
 import { isValidGuess } from './game/isValidGuess';
 import { evaluateGuess } from './game/evaluateGuess';
+import { createDigitValidator } from './game/createDigitValidator';
 
 const gameName: string = 'Bulls and Cows';
 
@@ -115,6 +116,11 @@ newGameButton.addEventListener('click', () => {
 
 guessInput.addEventListener('input', () => {
   message.textContent = '';
+  const validateDigit = createDigitValidator(currentBase);
+  const digits = guessInput.value.split('');
+  const validDigits = digits.filter(validateDigit);
+  const filteredGuess = validDigits.join('');
+  guessInput.value = filteredGuess.toUpperCase();
 });
 
 checkButton.addEventListener('click', () => {
