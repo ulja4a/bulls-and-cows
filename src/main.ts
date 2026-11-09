@@ -74,6 +74,8 @@ const message = document.createElement('p');
 const history = document.createElement('div');
 const attemptsDisplay = document.createElement('p');
 attemptsDisplay.textContent = 'Attempts: 0';
+const timerDisplay = document.createElement('p');
+timerDisplay.textContent = 'Time: 0s';
 
 app?.append(
   title,
@@ -86,6 +88,7 @@ app?.append(
   checkButton,
   message,
   attemptsDisplay,
+  timerDisplay,
   history,
 );
 
@@ -95,6 +98,8 @@ let currentLength = 4;
 let currentBase = 10;
 const guesses = new Set<string>();
 let attempts = 0;
+let seconds = 0;
+let timerId: number | null = null;
 startButton.addEventListener('click', () => {
   guessInput.value = '';
   message.textContent = '';
@@ -102,6 +107,12 @@ startButton.addEventListener('click', () => {
   guesses.clear();
   attempts = 0;
   attemptsDisplay.textContent = `Attempts: ${attempts}`;
+  seconds = 0;
+  timerDisplay.textContent = 'Time: 0s';
+  timerId = setInterval(() => {
+    seconds += 1;
+    timerDisplay.textContent = `Time: ${seconds}s`;
+  }, 1000);
   currentLength = Number(lengthSelect.value);
   currentBase = Number(baseSelect.value);
   secret = generateSecret(currentLength, currentBase);
@@ -113,6 +124,9 @@ startButton.addEventListener('click', () => {
 });
 
 newGameButton.addEventListener('click', () => {
+  if (timerId !== null) {
+    clearInterval(timerId);
+  }
   lengthSelect.disabled = false;
   baseSelect.disabled = false;
   secret = '';
@@ -163,6 +177,9 @@ checkButton.addEventListener('click', () => {
     if (result.bulls === currentLength) {
       message.textContent = 'You win!';
       isGameOver = true;
+      if (timerId !== null) {
+        clearInterval(timerId);
+      }
     } else {
       message.textContent = `Bulls: ${result.bulls}, Cows: ${result.cows}`;
     }
