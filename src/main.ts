@@ -72,6 +72,8 @@ checkButton.textContent = 'Check Guess';
 
 const message = document.createElement('p');
 const history = document.createElement('div');
+const attemptsDisplay = document.createElement('p');
+attemptsDisplay.textContent = 'Attempts: 0';
 
 app?.append(
   title,
@@ -83,6 +85,7 @@ app?.append(
   guessInput,
   checkButton,
   message,
+  attemptsDisplay,
   history,
 );
 
@@ -91,11 +94,14 @@ let isGameOver = false;
 let currentLength = 4;
 let currentBase = 10;
 const guesses = new Set<string>();
+let attempts = 0;
 startButton.addEventListener('click', () => {
   guessInput.value = '';
   message.textContent = '';
   history.textContent = '';
   guesses.clear();
+  attempts = 0;
+  attemptsDisplay.textContent = `Attempts: ${attempts}`;
   currentLength = Number(lengthSelect.value);
   currentBase = Number(baseSelect.value);
   secret = generateSecret(currentLength, currentBase);
@@ -147,6 +153,8 @@ checkButton.addEventListener('click', () => {
     message.textContent = 'Invalid guess!';
   } else {
     guesses.add(guess);
+    attempts += 1;
+    attemptsDisplay.textContent = `Attempts: ${attempts}`;
     const result = evaluateGuess(secret, guess);
     const historyItem = document.createElement('p');
     historyItem.textContent = `Guess: ${guess}, Bulls: ${result.bulls}, Cows: ${result.cows}`;
