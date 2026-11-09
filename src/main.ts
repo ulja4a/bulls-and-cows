@@ -120,12 +120,12 @@ startButton.addEventListener('click', () => {
   baseSelect.disabled = true;
   startButton.disabled = true;
   isGameOver = false;
-  console.log(secret);
 });
 
 newGameButton.addEventListener('click', () => {
   if (timerId !== null) {
     clearInterval(timerId);
+    timerId = null;
   }
   lengthSelect.disabled = false;
   baseSelect.disabled = false;
@@ -133,6 +133,12 @@ newGameButton.addEventListener('click', () => {
   guessInput.value = '';
   message.textContent = '';
   history.textContent = '';
+  guesses.clear();
+  attempts = 0;
+  attemptsDisplay.textContent = 'Attempts: 0';
+  seconds = 0;
+  timerDisplay.textContent = 'Time: 0s';
+  isGameOver = false;
   startButton.disabled = false;
 });
 
@@ -179,6 +185,7 @@ checkButton.addEventListener('click', () => {
       isGameOver = true;
       if (timerId !== null) {
         clearInterval(timerId);
+        timerId = null;
       }
     } else {
       message.textContent = `Bulls: ${result.bulls}, Cows: ${result.cows}`;
