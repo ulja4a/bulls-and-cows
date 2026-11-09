@@ -8,6 +8,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "build": "tsc && vite build",
+    "deploy": "npm run build && gh-pages -d dist",
     "test": "vitest run",
     "prepare": "husky",
     "dev": "vite"
@@ -28,6 +29,7 @@
     "@eslint/js": "^9.39.5",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
+    "gh-pages": "^6.3.0",
     "globals": "^17.14.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
