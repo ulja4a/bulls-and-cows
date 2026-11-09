@@ -4,9 +4,9 @@ import { evaluateGuess } from './game/evaluateGuess';
 
 const gameName: string = 'Bulls and Cows';
 
-console.log(gameName);
-
-const app = document.querySelector('#app');
+const app = document.createElement('div');
+app.id = 'app';
+document.body.append(app);
 
 const title = document.createElement('h1');
 title.textContent = gameName;
